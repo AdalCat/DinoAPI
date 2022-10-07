@@ -13,8 +13,37 @@ function createDino(req, res){
 async function getDino(req, res){
     const id = req.params.id;
     const dino = await Dino.findByPk(id);
-    res.status(200).json(dino);
+
+    if(dino){
+        res.status(200).json(dino);
+    } else{
+        res.status(404).end();
+    }
 }
+
+
+//Leer un solo Dino, por NAME
+async function getDinoNames(req, res){
+    const name = req.params.name;
+    const dino = await Dino.findOne({
+        where: {
+            name: name
+        },
+    })
+    res.status(200).json(dino)
+}
+
+const sequelize = require('../config/db');
+
+//Leer random
+async function getDinoRandom(req, res){
+    const dino = await Dino.findAll({
+        order: sequelize.random(), limit: 1
+    })
+    res.status(200).json(dino)
+}
+
+
 
 // Leer todos los Dinos
 async function getDinos(req, res){
@@ -42,6 +71,8 @@ async function deleteDino(req, res){
 
 // Exportamos las funciones
 module.exports = {
+    getDinoRandom,
+    getDinoNames,
 	createDino,
 	getDino,
 	getDinos,

@@ -3,6 +3,8 @@ const router = require('express').Router();
 
 // Llamamos a las funciones
 const {
+        getDinoRandom,
+        getDinoName,
         getDino,
         getDinos,
         createDino,
@@ -11,7 +13,9 @@ const {
 }= require('../controllers/dinos')
 
 router.get('/', getDinos);
-router.get('/:id', getDino);
+//Aqui no sirve esa ruta
+router.get('/dinos/:id', getDino);
+// router.get('/dinos/:name', getDinoName)
 router.post('/', createDino);
 router.patch('/:id', updateDino);
 router.delete('/:id', deleteDino);
