@@ -1,27 +1,26 @@
 //Dotenv
-require('dotenv').config()
+require("dotenv").config();
 
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 
 // Conexión a DB externa (Render)
 
-const sequelize = new Sequelize(process.env['DATABASE_URL'], 
-    {dialectOptions: {
-        ssl: {
-            require:true,
-            rejectUnauthorized: false
-        }
-    }}
-);
+const sequelize = new Sequelize(process.env["DATABASE_URL"], {
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+});
 
-
- sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => {
-    console.log('SUPER Conectado')
+    console.log("SUPER Conectado");
   })
-  .catch(err => {
-    console.log('No se conecto')
-  })
+  .catch((err) => {
+    console.log("No se conecto");
+  });
 
-
-module.exports = sequelize; 
+module.exports = sequelize;
