@@ -56,10 +56,83 @@ router.get('/', getDinos);
  *           type: json
  */
 
-/// FALTA DOC DE ESTOS DOS ///
+/// Obtener un dino aleatorio ///
 router.get('/aleatorio/', getDinoRandom);
+/**
+ * @openapi
+ * /dinos/aleatorio:
+ *     get:
+ *       summary: Obtener un dinosaurio aleatorio
+ *       description: Entrega un único dinosaurio aleatoriamente
+ *       operationId: getDinoRandom
+ *       produces:
+ *       - application/json
+ *       responses:
+ *         200:
+ *           description: Dinosaurio aleatorio encontrado    
+ */
+
+// Obtener un dino por nombre completo //
 router.get('/dinos/nombre/:name', getDinoNames);
+/**
+ * @openapi
+ * /dinos/nombre/{name}:
+ *     get:
+ *       summary: Obtener un dinosaurio por nombre
+ *       description: Entrega un único dinosaurio por nombre de dinosaurio
+ *       operationId: getDinoNames
+ *       produces:
+ *       - application/json
+ *       parameters: 
+ *       - name: name
+ *         in: path
+ *         description: nombre de dinosaurio a retornar
+ *         required: true
+ *         schema: 
+ *           type: string
+ *       responses:
+ *         200:
+ *           description: Dinosaurio encontrado por nombre
+ *           schema:
+ *             type: array
+ *             items: 
+ *               $ref: '#/definitions/dino'
+ *         400:
+ *           description: Nombre proporcionado invalido
+ *         404:
+ *           description: Dinosaurio no encontrado     
+ */
+
+// Obtener un dino por cualquier letra del nombre //
 router.get('/dinos/letras/:name', getDinoByLetter);
+/**
+ * @openapi
+ * /dinos/letras/{name}:
+ *     get:
+ *       summary: Filtrar listado de dinosaurios
+ *       description: Entrega un listado de dinosaurios filtrado por parte de nombre que coincida con la busqueda (5 letras minimo)
+ *       operationId: getDinoByLetter
+ *       produces:
+ *       - application/json
+ *       parameters: 
+ *       - name: name
+ *         in: path
+ *         description: porcion de nombre a buscar
+ *         required: true
+ *         schema: 
+ *           type: string
+ *       responses:
+ *         200:
+ *           description: Listado de dinosaurios que coinciden encontrados
+ *           schema:
+ *             type: array
+ *             items: 
+ *               $ref: '#/definitions/dino'
+ *         400:
+ *           description: Nombre proporcionado invalido
+ *         404:
+ *           description: Ningun dinosaurio encontrado     
+ */
 
 /// Obtener dinosaurio por ID ///
 router.get('/dinos/id/:id', getDino)
