@@ -37,6 +37,11 @@ try{
     console.log('Unable to connect to DB:', error);
 }
 
-app.listen(process.env['PORT'] || 3000, () => {
-  console.log("Server listening on PORT", process.env['PORT']);
+app.listen(process.env['PORT'] || 3030, ()=> {
+  console.log("Server listing on PORT", process.env['PORT']);
 });
+
+/* const PORT = 3000;
+app.listen(PORT, ()=> {
+    console.log("Server listing on PORT 3000");
+});  */
