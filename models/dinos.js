@@ -51,6 +51,7 @@ const Dino = sequelize.define('dinos', {
   await Dino.sync();
  
   
+  module.exports = Dino;
 
 return Dino;
 }

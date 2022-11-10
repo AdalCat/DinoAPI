@@ -6,7 +6,7 @@ const Dino = require('../models/dinos');
 // Creando Dino
 function createDino(req, res){
     const body = req.body;
-    Dino.create(body).then(dino => {
+    sequelize.models.dinos.create(body).then(dino => {
         res.status(201).json(dino);
     });
 }
@@ -14,7 +14,11 @@ function createDino(req, res){
 // Leer un solo Dino, por ID
 async function getDino(req, res){
     const id = req.params.id;
-    const dino = await Dino.findByPk(id);
+    const dino = await sequelize.models.dinos.findOne({where:{id},
+        include: [
+            { model: sequelize.models.habitats, attributes: ['id', 'place']}
+          ]
+    });
 
     if (dino) {
         res.status(200).json(dino);
@@ -26,7 +30,7 @@ async function getDino(req, res){
 //Leer un solo Dino, por NAME
 async function getDinoNames(req, res) {
     const name = req.params.name;
-    const dino = await Dino.findOne({
+    const dino = awaitsequelize.models.dinos.findOne({
       where: {
         name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + name.toLowerCase() + '%')
       },
@@ -37,7 +41,7 @@ async function getDinoNames(req, res) {
 //Leer varios dinos por búsqueda de nombre
 async function getDinoByLetter(req, res) {
     const name = req.params.name;
-    const dino = await Dino.findAll({
+    const dino = await sequelize.models.dinos.findAll({
         limit: 5,
         where: {
             name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + name.toLowerCase() + '%')
@@ -49,7 +53,7 @@ async function getDinoByLetter(req, res) {
   
 //Leer random
 async function getDinoRandom(req, res) {
-    const dino = await Dino.findAll({
+    const dino = await sequelize.models.dinos.findAll({
         order: sequelize.random(),
         limit: 1,
     });
@@ -58,7 +62,7 @@ async function getDinoRandom(req, res) {
 
 // Leer todos los Dinos
 async function getDinos(req, res){
-    const dinos = await Dino.findAll();
+    const dinos = await sequelize.models.dinos.findAll();
     res.status(200).json(dinos);
 }
 
@@ -66,15 +70,15 @@ async function getDinos(req, res){
 async function updateDino(req, res){
     const id = req.params.id;
     const dino = req.body;
-    await Dino.update(dino, { where: { id } });
-    const dino_updated = await Dino.findByPk(id);
+    await sequelize.models.dinos.update(dino, { where: { id } });
+    const dino_updated = await sequelize.models.dinos.findByPk(id);
     res.status(200).json(dino_updated);
 }
 
 // Eliminar Dino
 async function deleteDino(req, res){
     const id= req.params.id;
-    const deleted = Dino.destroy({
+    const deleted = sequelize.models.dinos.destroy({
         where: { id }
     });
     res.status(200).json(deleted);

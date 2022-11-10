@@ -16,6 +16,7 @@ router.get('/users/signup', (req, res) => {
 });
 
 router.use('/dinos',require('./dinos'));
+router.use('/habitats',require('./habitats'));
 
 
 module.exports = router;
