@@ -13,13 +13,15 @@ function createDino(req, res){
 
 // Leer un solo Dino, por ID
 async function getDino(req, res){
+    
     const id = req.params.id;
-    const dino = await sequelize.models.habitats.findOne({where:{id},
+    const dino = await sequelize.models.dinos.findOne({where:{id},
         include: [
-            { model: sequelize.models.habitats, attributes: ['id', 'place']}
+            
+            {model: sequelize.models.habitats, attributes: ['id', 'place']},
+            {model: sequelize.models.historicalperiods, attributes: ['id', 'name']}
           ]
     });
-
     if (dino) {
         res.status(200).json(dino);
     } else  {
@@ -64,7 +66,15 @@ async function getDinoRandom(req, res) {
 
 // Leer todos los Dinos
 async function getDinos(req, res){
-    const dinos = await sequelize.models.dinos.findAll();
+    
+    let dinos = await sequelize.models.dinos.findAll({
+        include: [
+            
+            {model: sequelize.models.habitats, attributes: ['id', 'place']},
+            {model: sequelize.models.historicalperiods, attributes: ['id', 'name']}
+
+          ]
+    });
     res.status(200).json(dinos);
 }
 

@@ -25,25 +25,27 @@ async function getHabitat(req, res){
     }
 }
 
-//Leer un solo Habitat, por NAME
-async function getHabitatNames(req, res) {
+//Leer un solo Habitat, por PLACE
+async function getHabitatPlaces(req, res) {
     const place = req.params.place;
     const habitat = await sequelize.models.habitats.findOne({
       where: {
         place: sequelize.where(sequelize.fn('LOWER', sequelize.col('place')), 'LIKE', '%' + place.toLowerCase() + '%')
-      },
+      },include: [
+        { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
     res.status(200).json(habitat);
 }
 
 //Leer varios habitats por búsqueda de nombre
 async function getHabitatByLetter(req, res) {
-    const place = req.params.place;
+    const letter = req.params.letter;
     const habitat = await sequelize.models.habitats.findAll({
         limit: 5,
         where: {
-            place: sequelize.where(sequelize.fn('LOWER', sequelize.col('place')), 'LIKE', '%' + place.toLowerCase() + '%')
-      }
+            place: sequelize.where(sequelize.fn('LOWER', sequelize.col('place')), 'LIKE', '%' + letter.toLowerCase() + '%')
+      },include: [
+        { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
     res.status(200).json(habitat);
   }
@@ -53,14 +55,16 @@ async function getHabitatByLetter(req, res) {
 async function getHabitatRandom(req, res) {
     const habitat = await sequelize.models.habitats.findAll({
         order: sequelize.random(),
-        limit: 1,
+        limit: 1,include: [
+            { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
     res.status(200).json(habitat);
 }
 
 // Leer todos los Habitats
 async function getHabitats(req, res){
-    const habitats = await sequelize.models.habitats.findAll();
+    const habitats = await sequelize.models.habitats.findAll({include: [
+        { model: sequelize.models.dinos, attributes: ['id', 'name']}]});
     res.status(200).json(habitats);
 }
 
@@ -87,7 +91,7 @@ module.exports = {
 	createHabitat,
 	getHabitat,
 	getHabitats,
-    getHabitatNames,
+    getHabitatPlaces,
     getHabitatRandom,
     getHabitatByLetter,
 	updateHabitat,

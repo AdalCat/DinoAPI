@@ -16,9 +16,14 @@ const Dino = sequelize.define('dinos', {
     },
     onDelete: 'CASCADE',
   },
-    historicalPeriod:{
-        type: DataTypes.CHAR(255)
-    },
+    historicalperiodId:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'historicalperiods',
+          foreignKey: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
     sizeAndWeight:{
         type: DataTypes.CHAR(255)
     },

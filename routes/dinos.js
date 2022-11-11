@@ -135,7 +135,7 @@ router.get('/letras/:name', getDinoByLetter);
  */
 
 /// Obtener dinosaurio por ID ///
-router.get('/:id', getDino)
+router.get('/id/:id', getDino)
 /**
  * @openapi
  * /dinos/{id}:
