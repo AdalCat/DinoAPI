@@ -14,7 +14,7 @@ function createDino(req, res){
 // Leer un solo Dino, por ID
 async function getDino(req, res){
     const id = req.params.id;
-    const dino = await sequelize.models.dinos.findOne({where:{id},
+    const dino = await sequelize.models.habitats.findOne({where:{id},
         include: [
             { model: sequelize.models.habitats, attributes: ['id', 'place']}
           ]
@@ -30,10 +30,12 @@ async function getDino(req, res){
 //Leer un solo Dino, por NAME
 async function getDinoNames(req, res) {
     const name = req.params.name;
-    const dino = awaitsequelize.models.dinos.findOne({
+    const dino = await sequelize.models.dinos.findOne({
       where: {
         name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + name.toLowerCase() + '%')
-      },
+      }, include: [
+        { model: sequelize.models.habitats, attributes: ['id', 'place']}
+      ],
     });
     res.status(200).json(dino);
 }

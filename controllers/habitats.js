@@ -14,7 +14,9 @@ function createHabitat(req, res){
 // Leer un solo Habitat, por ID
 async function getHabitat(req, res){
     const id = req.params.id;
-    const habitat = await sequelize.models.habitats.findByPk(id);
+    const habitat = await sequelize.models.habitats.findOne({where:{id},
+         include: [
+            { model: sequelize.models.dinos, attributes: ['id', 'name']}]});
 
     if (habitat) {
         res.status(200).json(habitat);
