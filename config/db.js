@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
     host: 'containers-us-west-118.railway.app',
     dialect: 'postgres',
     port: 6426,
-    logging: true
+    logging: false
   }
 )
 const userModel = require('../models/users')

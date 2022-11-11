@@ -1,6 +1,6 @@
 // Llamamos al Router de Express
 const router = require('express').Router();
-
+const permission = require('../middlewares/permission')
 // Llamamos a las funciones
 const {
         createDino,
@@ -16,7 +16,7 @@ const {
 const auth = require('../config/auth')
 
 // Para crear un Dino
-router.post('/', createDino);
+router.post('/', permission('admin'),createDino);
 /**
  * @swagger
  * /dinos:
@@ -42,7 +42,7 @@ router.post('/', createDino);
  */ 
 
 // Para obtener todos los Dinos
-router.get('/', getDinos);
+router.get('/',getDinos);
 /**
  * @openapi
  * /dinos:
@@ -167,7 +167,7 @@ router.get('/id/:id', getDino)
 
 
 /// Para actualizar un dinosaurio ///
-router.patch('/:id', updateDino);
+router.patch('/:id',permission('admin'), updateDino);
 /**
  * @openapi
  * /dinos/{id}:
@@ -201,7 +201,7 @@ router.patch('/:id', updateDino);
  */
 
 /// Para eliminar un dinosaurio ///
-router.delete('/:id', deleteDino);
+router.delete('/:id',permission('admin'), deleteDino);
 /**
  * @openapi
  * /dinos/{id}:

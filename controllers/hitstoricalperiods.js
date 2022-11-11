@@ -2,7 +2,7 @@
 const { Op } = require("sequelize");
 const sequelize = require("../config/db");
 const HistoricalPeriod = require('../models/historicalperiods');
-
+const permission = require('../middlewares/permission')
 // Creando HistoricalPeriod
 function createHistoricalPeriod(req, res){
     const body = req.body;
@@ -53,6 +53,9 @@ async function getHistoricalPeriodByLetter(req, res) {
   
 //Leer random
 async function getHistoricalPeriodRandom(req, res) {
+    
+    
+
     const habitat = await sequelize.models.historicalperiods.findAll({
         order: sequelize.random(),
         limit: 1,include: [

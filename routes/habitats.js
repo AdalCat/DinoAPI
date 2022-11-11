@@ -167,7 +167,7 @@ router.get('/id/:id', getHabitat)
 
 
 /// Para actualizar un habitat ///
-router.patch('/:id', updateHabitat);
+router.patch('/:id', permission('admin'),updateHabitat);
 /**
  * @openapi
  * /dinos/{id}:
@@ -201,7 +201,7 @@ router.patch('/:id', updateHabitat);
  */
 
 /// Para eliminar un habitat ///
-router.delete('/:id', deleteHabitat);
+router.delete('/:id', permission('admin'),deleteHabitat);
 /**
  * @openapi
  * /dinos/{id}:

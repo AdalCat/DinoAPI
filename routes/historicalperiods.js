@@ -1,5 +1,6 @@
 // Llamamos al Router de Express
 const router = require('express').Router();
+const permission = require('../middlewares/permission')
 
 // Llamamos a las funciones
 const {
@@ -16,7 +17,7 @@ const {
 const auth = require('../config/auth')
 
 // Para crear un HistoricalPeriod
-router.post('/', createHistoricalPeriod);
+router.post('/',permission('admin'), createHistoricalPeriod);
 /**
  * @swagger
  * /dinos:
@@ -57,7 +58,7 @@ router.get('/', getHistoricalPeriods);
  */
 
 /// Obtener un dino aleatorio ///
-router.get('/random/', getHistoricalPeriodRandom);
+router.get('/random/',getHistoricalPeriodRandom);
 /**
  * @openapi
  * /dinos/aleatorio:
@@ -167,7 +168,7 @@ router.get('/id/:id', getHistoricalPeriod)
 
 
 /// Para actualizar un dinosaurio ///
-router.patch('/:id', updateHistoricalPeriod);
+router.patch('/:id',permission('admin'), updateHistoricalPeriod);
 /**
  * @openapi
  * /dinos/{id}:
@@ -201,7 +202,7 @@ router.patch('/:id', updateHistoricalPeriod);
  */
 
 /// Para eliminar un dinosaurio ///
-router.delete('/:id', deleteHistoricalPeriod);
+router.delete('/:id',permission('admin'), deleteHistoricalPeriod);
 /**
  * @openapi
  * /dinos/{id}:
