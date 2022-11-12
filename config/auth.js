@@ -1,38 +1,49 @@
-const secret = require('./secret');
-const { expressjwt } = require('express-jwt');
+const express = require('express')
+const router = express.Router()
+const sequelize = require('./db')
+const jwt = require('jsonwebtoken')
 
-function getTokenFromHeader(req) {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] == 'Bearer') {
-        return req.headers.authorization.split(' ')[1]
-    }
-}
+router.post('/login', async (req, res) => {
+  const { body } = req
+  const user = await sequelize.models.users.findOne({ 
+                where: { email: body.email }
+              })
 
-const auth = {
-    isMember: function(req, res, next) {
-        if (!req.auth || !req.auth.user) {
-            return res.sendStatus(401);
-        }
-        if (req.auth.role !== 'member') {
-            return res.sendStatus(403);
-        }
-        next();
-    }, 
-    isAdmin: function(req, res, next) {
-        if (!req.auth) {
-            return res.sendStatus(401);
-        }
-        if (req.auth.role !== 'admin') {
-            return res.sendStatus(403);
-        }
-        next();
-    },
-    optional: expressjwt({
-        secret: secret,
-        algorithms: ['HS256'],
-        userProperty: 'user',
-        getToken: getTokenFromHeader,
-        credentialsRequired: false,
-    })
-}
+  if (!user) return res.status(401).json({ message: 'Unauthorized' })
+  if (!user.validPassword(body.password)) return res.status(401).json({ message: 'Invalid credentials!' })
 
-module.exports = auth;
+  const token = jwt.sign({ userId: user.id }, 'secretKey', {
+    expiresIn: 3600
+  })
+
+  return res.json({ message: 'Athenticated successfully!', token })
+})
+
+router.post('/signup', async (req, res) => {
+  const { body } = req;
+  let user = await sequelize.models.users.findOne({
+    where: { email: body.email },
+  });
+
+  // Validation for known is the user's email exists
+  if (user) {
+    return res.status(400).json({ message: "this email is already registered" });
+  }
+
+  // Creating the user
+  user = await sequelize.models.users.create({
+    name: body.name,
+    lastname: body.lastname,
+    firstSurname: body.firstSurname,
+    secondSurname: body.secondSurname,
+    email: body.email,
+    password: body.password,
+    type: 'client',
+  })
+
+   // Saving user
+  await user.save();
+  return res.json({ message: 'Your account was created successfully'});
+})
+
+module.exports = router

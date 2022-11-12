@@ -1,6 +1,9 @@
 //Dotenv
 require('dotenv').config()
 
+// helmet and cors
+const helmet = require('helmet')
+const cors = require('cors')
 // Activamos Express
 const express = require('express');
 
@@ -23,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use('/', routes);
-app.use(auth.optional)
+//app.use(auth.optional)
 
 // Cargamos la vista del formulario
 app.set('view engine', 'pug');
@@ -31,6 +34,11 @@ app.set('view engine', 'pug');
 // Configuramos Swagger
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use(helmet())
+app.use(cors())
+
+
+
 
 // Revisamos la conexión con la DB
 try{
@@ -44,3 +52,5 @@ try{
 app.listen(process.env['PORT'] || 3000, () => {
   console.log("Server listening on PORT", process.env['PORT']);
 });
+
+// Revisamos la conexión con la DB

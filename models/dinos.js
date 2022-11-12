@@ -1,16 +1,29 @@
 const { Sequelize, DataTypes }= require('sequelize');
 const sequelize = require('../config/db');
 
-const Dino = sequelize.define('Dino', {
+
+module.exports = async (sequelize) => {
+const Dino = sequelize.define('dinos', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: {
         type: DataTypes.CHAR(255)
     },
-    habitat: {
-        type: DataTypes.CHAR(255)
+    habitatId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'habitats',
+      foreignKey: 'id',
     },
-    historicalPeriod:{
-        type: DataTypes.CHAR(255)
-    },
+    onDelete: 'CASCADE',
+  },
+    historicalperiodId:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'historicalperiods',
+          foreignKey: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
     sizeAndWeight:{
         type: DataTypes.CHAR(255)
     },
@@ -26,6 +39,24 @@ const Dino = sequelize.define('Dino', {
     image:{
         type: DataTypes.CHAR(255)
     }
-});
+    
+},
+{
+    hooks: {
+      beforeCreate: function (dino, options) {
+        dino.createdAt = new Date();
+        dino.updatedAt = new Date();
+      },
+      beforeUpdate: function (dino, options) {
+        dino.updatedAt = new Date();
+      },
+    },
+    
+  });
+  await Dino.sync();
+ 
+  
+  module.exports = Dino;
 
-module.exports = Dino;
+return Dino;
+}
