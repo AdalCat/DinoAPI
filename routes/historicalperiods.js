@@ -1,29 +1,30 @@
 // Llamamos al Router de Express
 const router = require('express').Router();
 const permission = require('../middlewares/permission')
+
 // Llamamos a las funciones
 const {
-        createDino,
-        getDino,
-        getDinos,
-        getDinoNames,
-        getDinoRandom,
-        getDinoByLetter,
-        updateDino,
-        deleteDino
-}= require('../controllers/dinos')
+        createHistoricalPeriod,
+        getHistoricalPeriod,
+        getHistoricalPeriods,
+        getHistoricalPeriodNames,
+        getHistoricalPeriodRandom,
+        getHistoricalPeriodByLetter,
+        updateHistoricalPeriod,
+        deleteHistoricalPeriod
+}= require('../controllers/hitstoricalperiods')
 
 const auth = require('../config/auth')
 
-// Para crear un Dino
-router.post('/', permission('admin'),createDino);
+// Para crear un HistoricalPeriod
+router.post('/',permission('admin'), createHistoricalPeriod);
 /**
  * @swagger
  * /dinos:
  *     post:
  *       summary: Crear dinosaurio
  *       description: Agregar nuevo dinosaurio
- *       operationId: createDino
+ *       operationId: createHistoricalPeriod
  *       consumes:
  *       - application/json
  *       produces:
@@ -41,15 +42,15 @@ router.post('/', permission('admin'),createDino);
  *           type: json
  */ 
 
-// Para obtener todos los Dinos
-router.get('/',getDinos);
+// Para obtener todos los HistoricalPeriods
+router.get('/', getHistoricalPeriods);
 /**
  * @openapi
  * /dinos:
  *     get:
  *       summary: Listado de dinosauros
  *       description: Entrega la lista completa de los dinosaurios disponibles
- *       operationId: getDinos
+ *       operationId: getHistoricalPeriods
  *       responses:
  *          200:
  *           description: Todos los dinosauros disponibles
@@ -57,30 +58,30 @@ router.get('/',getDinos);
  */
 
 /// Obtener un dino aleatorio ///
-router.get('/aleatorio/', getDinoRandom);
+router.get('/random/',getHistoricalPeriodRandom);
 /**
  * @openapi
  * /dinos/aleatorio:
  *     get:
  *       summary: Obtener un dinosaurio aleatorio
  *       description: Entrega un único dinosaurio aleatoriamente
- *       operationId: getDinoRandom
+ *       operationId: getHistoricalPeriodRandom
  *       produces:
  *       - application/json
  *       responses:
  *         200:
- *           description: Dinosaurio aleatorio encontrado    
+ *           description: HistoricalPeriodsaurio aleatorio encontrado    
  */
 
 // Obtener un dino por nombre completo //
-router.get('/nombre/:name', getDinoNames);
+router.get('/name/:name', getHistoricalPeriodNames);
 /**
  * @openapi
  * /dinos/nombre/{name}:
  *     get:
  *       summary: Obtener un dinosaurio por nombre
  *       description: Entrega un único dinosaurio por nombre de dinosaurio
- *       operationId: getDinoNames
+ *       operationId: getHistoricalPeriodNames
  *       produces:
  *       - application/json
  *       parameters: 
@@ -92,7 +93,7 @@ router.get('/nombre/:name', getDinoNames);
  *           type: string
  *       responses:
  *         200:
- *           description: Dinosaurio encontrado por nombre
+ *           description: HistoricalPeriodsaurio encontrado por nombre
  *           schema:
  *             type: array
  *             items: 
@@ -100,18 +101,18 @@ router.get('/nombre/:name', getDinoNames);
  *         400:
  *           description: Nombre proporcionado invalido
  *         404:
- *           description: Dinosaurio no encontrado     
+ *           description: HistoricalPeriodsaurio no encontrado     
  */
 
 // Obtener un dino por cualquier letra del nombre //
-router.get('/letras/:name', getDinoByLetter);
+router.get('/letters/:letters', getHistoricalPeriodByLetter);
 /**
  * @openapi
- * /dinos/letras/{name}:
+ * /dinos/letras/{letters}:
  *     get:
  *       summary: Filtrar listado de dinosaurios
  *       description: Entrega un listado de dinosaurios filtrado por parte de nombre que coincida con la busqueda (5 letras minimo)
- *       operationId: getDinoByLetter
+ *       operationId: getHistoricalPeriodByLetter
  *       produces:
  *       - application/json
  *       parameters: 
@@ -135,14 +136,14 @@ router.get('/letras/:name', getDinoByLetter);
  */
 
 /// Obtener dinosaurio por ID ///
-router.get('/id/:id', getDino)
+router.get('/id/:id', getHistoricalPeriod)
 /**
  * @openapi
  * /dinos/{id}:
  *     get:
  *       summary: Obtener un dinosaurio por ID
  *       description: Entrega un único dinosaurio por ID
- *       operationId: getDino
+ *       operationId: getHistoricalPeriod
  *       produces:
  *       - application/json
  *       parameters: 
@@ -154,7 +155,7 @@ router.get('/id/:id', getDino)
  *         format: int64
  *       responses:
  *         200:
- *           description: Dinosaurio encontrado por ID
+ *           description: HistoricalPeriodsaurio encontrado por ID
  *           schema:
  *             type: array
  *             items: 
@@ -162,19 +163,19 @@ router.get('/id/:id', getDino)
  *         400:
  *           description: ID proporcionado invalido
  *         404:
- *           description: Dinosaurio no encontrado     
+ *           description: HistoricalPeriodsaurio no encontrado     
  */
 
 
 /// Para actualizar un dinosaurio ///
-router.patch('/:id',permission('admin'), updateDino);
+router.patch('/:id',permission('admin'), updateHistoricalPeriod);
 /**
  * @openapi
  * /dinos/{id}:
  *     patch:
  *       summary: Actualizar dinosaurio
  *       description: Actualizar algun parametro del dinosaurio
- *       operationId: actualizarDino
+ *       operationId: actualizarHistoricalPeriod
  *       consumes: application/json
  *       produces: application/json
  *       parameters: 
@@ -192,7 +193,7 @@ router.patch('/:id',permission('admin'), updateDino);
  *         format: int64
  *       responses:
  *         200:
- *           description: Dinosaurio actualizado
+ *           description: HistoricalPeriodsaurio actualizado
  *           type: json
  *         400: 
  *           description: ID invalido
@@ -201,14 +202,14 @@ router.patch('/:id',permission('admin'), updateDino);
  */
 
 /// Para eliminar un dinosaurio ///
-router.delete('/:id',permission('admin'), deleteDino);
+router.delete('/:id',permission('admin'), deleteHistoricalPeriod);
 /**
  * @openapi
  * /dinos/{id}:
  *     delete:
  *       summary: Borrar dinosaurio
  *       description: Eliminar dinosaurio seleccionado por ID
- *       operationId: deleteDino
+ *       operationId: deleteHistoricalPeriod
  *       produces: 
  *       - application/json
  *       parameters:
@@ -225,7 +226,7 @@ router.delete('/:id',permission('admin'), deleteDino);
  *         400:
  *           description: ID proporcionadio invalido
  *         404: 
- *           description: Dinosaurio no encontrado
+ *           description: HistoricalPeriodsaurio no encontrado
  */
 
 

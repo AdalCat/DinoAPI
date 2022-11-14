@@ -1,37 +1,38 @@
 // Llamamos al Router de Express
 const router = require('express').Router();
 const permission = require('../middlewares/permission')
+
 // Llamamos a las funciones
 const {
-        createDino,
-        getDino,
-        getDinos,
-        getDinoNames,
-        getDinoRandom,
-        getDinoByLetter,
-        updateDino,
-        deleteDino
-}= require('../controllers/dinos')
+        createHabitat,
+        getHabitat,
+        getHabitats,
+        getHabitatPlaces,
+        getHabitatRandom,
+        getHabitatByLetter,
+        updateHabitat,
+        deleteHabitat
+}= require('../controllers/habitats')
 
 const auth = require('../config/auth')
 
-// Para crear un Dino
-router.post('/', permission('admin'),createDino);
+// Para crear un Habitat
+router.post('/', createHabitat);
 /**
  * @swagger
- * /dinos:
+ * /habitats:
  *     post:
- *       summary: Crear dinosaurio
- *       description: Agregar nuevo dinosaurio
- *       operationId: createDino
+ *       summary: Crear habitat
+ *       description: Agregar nuevo habitat
+ *       operationId: createHabitat
  *       consumes:
  *       - application/json
  *       produces:
  *       - application/json
  *       parameters: 
  *       - in: body
- *         name: body
- *         description: Objeto que contiene al dinosaurio que sera agregado
+ *         place: body
+ *         description: Objeto que contiene al habitat que sera agregado
  *         required: true
  *         schema:
  *           $ref: '#/definitions/dino'
@@ -41,15 +42,15 @@ router.post('/', permission('admin'),createDino);
  *           type: json
  */ 
 
-// Para obtener todos los Dinos
-router.get('/',getDinos);
+// Para obtener todos los Habitats
+router.get('/', getHabitats);
 /**
  * @openapi
  * /dinos:
  *     get:
  *       summary: Listado de dinosauros
- *       description: Entrega la lista completa de los dinosaurios disponibles
- *       operationId: getDinos
+ *       description: Entrega la lista completa de los habitats disponibles
+ *       operationId: getHabitats
  *       responses:
  *          200:
  *           description: Todos los dinosauros disponibles
@@ -57,42 +58,42 @@ router.get('/',getDinos);
  */
 
 /// Obtener un dino aleatorio ///
-router.get('/aleatorio/', getDinoRandom);
+router.get('/random/', getHabitatRandom);
 /**
  * @openapi
  * /dinos/aleatorio:
  *     get:
- *       summary: Obtener un dinosaurio aleatorio
- *       description: Entrega un único dinosaurio aleatoriamente
- *       operationId: getDinoRandom
+ *       summary: Obtener un habitat aleatorio
+ *       description: Entrega un único habitat aleatoriamente
+ *       operationId: getHabitatRandom
  *       produces:
  *       - application/json
  *       responses:
  *         200:
- *           description: Dinosaurio aleatorio encontrado    
+ *           description: Habitatsaurio aleatorio encontrado    
  */
 
 // Obtener un dino por nombre completo //
-router.get('/nombre/:name', getDinoNames);
+router.get('/place/:place', getHabitatPlaces);
 /**
  * @openapi
- * /dinos/nombre/{name}:
+ * /dinos/nombre/{place}:
  *     get:
- *       summary: Obtener un dinosaurio por nombre
- *       description: Entrega un único dinosaurio por nombre de dinosaurio
- *       operationId: getDinoNames
+ *       summary: Obtener un habitat por nombre
+ *       description: Entrega un único habitat por nombre de habitat
+ *       operationId: getHabitatPlaces
  *       produces:
  *       - application/json
  *       parameters: 
- *       - name: name
+ *       - place: place
  *         in: path
- *         description: nombre de dinosaurio a retornar
+ *         description: nombre de habitat a retornar
  *         required: true
  *         schema: 
  *           type: string
  *       responses:
  *         200:
- *           description: Dinosaurio encontrado por nombre
+ *           description: Habitatsaurio encontrado por nombre
  *           schema:
  *             type: array
  *             items: 
@@ -100,22 +101,22 @@ router.get('/nombre/:name', getDinoNames);
  *         400:
  *           description: Nombre proporcionado invalido
  *         404:
- *           description: Dinosaurio no encontrado     
+ *           description: Habitatsaurio no encontrado     
  */
 
 // Obtener un dino por cualquier letra del nombre //
-router.get('/letras/:name', getDinoByLetter);
+router.get('/letter/:letter', getHabitatByLetter);
 /**
  * @openapi
- * /dinos/letras/{name}:
+ * /dinos/letras/{letter}:
  *     get:
- *       summary: Filtrar listado de dinosaurios
- *       description: Entrega un listado de dinosaurios filtrado por parte de nombre que coincida con la busqueda (5 letras minimo)
- *       operationId: getDinoByLetter
+ *       summary: Filtrar listado de habitats
+ *       description: Entrega un listado de habitats filtrado por parte de nombre que coincida con la busqueda (5 letras minimo)
+ *       operationId: getHabitatByLetter
  *       produces:
  *       - application/json
  *       parameters: 
- *       - name: name
+ *       - place: place
  *         in: path
  *         description: porcion de nombre a buscar
  *         required: true
@@ -123,7 +124,7 @@ router.get('/letras/:name', getDinoByLetter);
  *           type: string
  *       responses:
  *         200:
- *           description: Listado de dinosaurios que coinciden encontrados
+ *           description: Listado de habitats que coinciden encontrados
  *           schema:
  *             type: array
  *             items: 
@@ -131,30 +132,30 @@ router.get('/letras/:name', getDinoByLetter);
  *         400:
  *           description: Nombre proporcionado invalido
  *         404:
- *           description: Ningun dinosaurio encontrado     
+ *           description: Ningun habitat encontrado     
  */
 
-/// Obtener dinosaurio por ID ///
-router.get('/id/:id', getDino)
+/// Obtener habitat por ID ///
+router.get('/id/:id', getHabitat)
 /**
  * @openapi
  * /dinos/{id}:
  *     get:
- *       summary: Obtener un dinosaurio por ID
- *       description: Entrega un único dinosaurio por ID
- *       operationId: getDino
+ *       summary: Obtener un habitat por ID
+ *       description: Entrega un único habitat por ID
+ *       operationId: getHabitat
  *       produces:
  *       - application/json
  *       parameters: 
- *       - name: id
+ *       - place: id
  *         in: path
- *         description: ID de dinosaurio a retornar
+ *         description: ID de habitat a retornar
  *         required: true
  *         type: integer
  *         format: int64
  *       responses:
  *         200:
- *           description: Dinosaurio encontrado por ID
+ *           description: Habitatsaurio encontrado por ID
  *           schema:
  *             type: array
  *             items: 
@@ -162,59 +163,59 @@ router.get('/id/:id', getDino)
  *         400:
  *           description: ID proporcionado invalido
  *         404:
- *           description: Dinosaurio no encontrado     
+ *           description: Habitatsaurio no encontrado     
  */
 
 
-/// Para actualizar un dinosaurio ///
-router.patch('/:id',permission('admin'), updateDino);
+/// Para actualizar un habitat ///
+router.patch('/:id', permission('admin'),updateHabitat);
 /**
  * @openapi
  * /dinos/{id}:
  *     patch:
- *       summary: Actualizar dinosaurio
- *       description: Actualizar algun parametro del dinosaurio
- *       operationId: actualizarDino
+ *       summary: Actualizar habitat
+ *       description: Actualizar algun parametro del habitat
+ *       operationId: actualizarHabitat
  *       consumes: application/json
  *       produces: application/json
  *       parameters: 
  *       - in: body
- *         name: body
+ *         place: body
  *         description: Objeto con contenido del campo que se actualizara 
  *         required: true
  *         schema: 
  *           $ref: '#/definitions/dino'
- *       - name: id
+ *       - place: id
  *         in: path
- *         description: Id del dinosaurio que se actualizara
+ *         description: Id del habitat que se actualizara
  *         required: true
  *         type: integer
  *         format: int64
  *       responses:
  *         200:
- *           description: Dinosaurio actualizado
+ *           description: Habitatsaurio actualizado
  *           type: json
  *         400: 
  *           description: ID invalido
  *         404:
- *           description: dinosaurio no encontrado
+ *           description: habitat no encontrado
  */
 
-/// Para eliminar un dinosaurio ///
-router.delete('/:id',permission('admin'), deleteDino);
+/// Para eliminar un habitat ///
+router.delete('/:id', permission('admin'),deleteHabitat);
 /**
  * @openapi
  * /dinos/{id}:
  *     delete:
- *       summary: Borrar dinosaurio
- *       description: Eliminar dinosaurio seleccionado por ID
- *       operationId: deleteDino
+ *       summary: Borrar habitat
+ *       description: Eliminar habitat seleccionado por ID
+ *       operationId: deleteHabitat
  *       produces: 
  *       - application/json
  *       parameters:
- *       - name: id
+ *       - place: id
  *         in: path
- *         description: Id del dinosaurio a eliminar
+ *         description: Id del habitat a eliminar
  *         required: true
  *         type: integer
  *         format: int64
@@ -225,18 +226,18 @@ router.delete('/:id',permission('admin'), deleteDino);
  *         400:
  *           description: ID proporcionadio invalido
  *         404: 
- *           description: Dinosaurio no encontrado
+ *           description: Habitatsaurio no encontrado
  */
 
 
-/// Ejemplo de cómo se obtiene a un dinosaurio ///
+/// Ejemplo de cómo se obtiene a un habitat ///
 /**
  * @openapi
  *definitions: 
  *  dino:
  *    type: object
  *    properties: 
- *      name: 
+ *      place: 
  *        type: string
  *        example: Abrictosaurus
  *      habitat:
@@ -260,7 +261,7 @@ router.delete('/:id',permission('admin'), deleteDino);
  *      image:
  *        type: string
  *    xml:
- *      name: dino
+ *      place: dino
  */
 
 

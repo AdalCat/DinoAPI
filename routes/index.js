@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const { getDinoNames, getDino, getDinoByLetter } = require('../controllers/dinos');
-const dinos = require('./dinos');
-const users = require('./users');
+const {createDino, getDino, getDinoNames, getDinoByLetter,getDinoRandom,getDinos } = require('../controllers/dinos');
+const authenticate = require('../middlewares/authentication')
+const permissions = require('../middlewares/permission')
+router.use('/auth', require('../config/auth'))
 
 router.get('/', (req, res) => {
     res.render('index')
@@ -15,11 +16,9 @@ router.get('/users/signup', (req, res) => {
     res.render('signup')
 });
 
-router.use('/dinos', dinos);
-router.use('/dinos/aleatorio/', getDinoNames);
-router.use('/dinos/nombre/:name', getDinoNames);
-router.use('/dinos/id/:id', getDino);
-router.use('/dinos/letras/:name', getDinoByLetter);
-router.use('/users', users)
+router.use('/dinos',authenticate,require('./dinos'));
+router.use('/habitats',authenticate,require('./habitats'));
+router.use('/historicalperiods',authenticate,require('./historicalperiods'));
+
 
 module.exports = router;

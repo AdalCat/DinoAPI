@@ -1,65 +1,30 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const crypto = require('node:crypto');
-const jwt = require('jsonwebtoken');
-const secret = require('../config/secret')
+const { DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
-const User = sequelize.define('User', {
-    username: {
-        type: DataTypes.CHAR(64),
-        allowNull: false,
-        unique: true,
-        validate: {
-            isLowercase: true,
-            is: /^[a-zA-Z0-9_-]+$/
-        }
-    },
-    email: {
-        type: DataTypes.CHAR(64),
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
-    password_hash: { 
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
-    password_salt: { 
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
-    role: {
-        type: DataTypes.CHAR(64),
-        allowNull: false,
+module.exports = async (sequelize) => {
+  const User = sequelize.define('users', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: DataTypes.STRING,
+    firstSurname: DataTypes.STRING,
+    secondSurname: DataTypes.STRING,
+    email: DataTypes.STRING,
+    type: DataTypes.STRING,
+    password: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
+  }, {
+    hooks: {
+      beforeCreate: (user) => {
+        const salt = bcrypt.genSaltSync()
+        user.password = bcrypt.hashSync(user.password, salt)
+      }
     }
-});
+  })
+  await User.sync();
 
-User.createPassword = function(plainText) {
-    salt = crypto.randomBytes(16).toString('hex');
-    hash = crypto
-        .pbkdf2Sync(plainText, salt, 10000, 512, "sha512")
-        .toString('hex');
-    return { salt: salt, hash: hash }
+  User.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password)
+  }
+
+  return User;
 };
-
-User.validatePassword = function(password, user_salt, user_hash) {
-    const hash = crypto
-        .pbkdf2Sync(password, user_salt, 10000, 512, "sha512")
-        .toString('hex');
-    return user_hash === hash;
-};
-
-User.generateJWT = function(user) {
-    const today = new Date();
-    const exp = new Date(today);
-    exp.setDate(today.getDate() + 60);
-
-    return jwt.sign({
-        user: user.username,
-        exp: parseInt(exp.getTime() / 1000)
-    }, secret)
-}
-
-module.exports = User;
