@@ -114,7 +114,7 @@ https://dinoapi.onrender.com/historicalperiods/name/:name
 
 https://dinoapi.onrender.com/historicalperiods/letters/:letters
 
-#### Obtener un historicalPeriod por ID}
+#### Obtener un historicalPeriod por ID
 
 https://dinoapi.onrender.com/historicalperiods/id/:id
 
