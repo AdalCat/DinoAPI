@@ -155,4 +155,4 @@ El proyecto se basa en la siguiente imagen del modelo relacional, en donde se pu
 
 Como se muestra en la siguiente imagen se presentan las diferentes tecnologías que se utilizaron en el proyecto. El rectángulo indica la aplicación backend, dentro del backend se encuentra una base de datos PostgreSQL y una API desarrollada en JavaScript con node, npm y GitHub como gestor de versiones que se comunica con la base de datos mediante Sequelize. Todo el backend está hosteado en AWS y se comunica con un cliente a través de Express.js en un navegador.
 
-![Tecnologías utilizadas](./assets/Backend-Dino.png "Tecnologías utilizadas")
+![Tecnologías utilizadas](./assets/Backend-Dino.jpg "Tecnologías utilizadas")
