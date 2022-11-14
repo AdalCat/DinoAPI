@@ -19,7 +19,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      historicalPeriodId: {
+      historicalperiodId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'historicalPeriods',

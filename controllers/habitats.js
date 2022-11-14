@@ -21,7 +21,9 @@ async function getHabitat(req, res){
     if (habitat) {
         res.status(200).json(habitat);
     } else  {
-        res.status(404).end();
+        res.status(404).json({
+            Message: "Habitat no encontrado",
+          });
     }
 }
 
@@ -34,8 +36,15 @@ async function getHabitatPlaces(req, res) {
       },include: [
         { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
-    res.status(200).json(habitat);
-}
+    if (habitat) {
+        res.status(200).json(habitat);
+      } else {
+        res.status(404).json({
+          Message: "Habitat no encontrado",
+        });
+      }
+    
+  }
 
 //Leer varios habitats por búsqueda de nombre
 async function getHabitatByLetter(req, res) {
@@ -47,8 +56,14 @@ async function getHabitatByLetter(req, res) {
       },include: [
         { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
-    res.status(200).json(habitat);
-  }
+    if (habitat) {
+        res.status(200).json(habitat);
+      } else {
+        res.status(404).json({
+          Message: "Habitat no encontrado",
+        });
+      }
+    }
   
   
 //Leer random

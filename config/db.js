@@ -5,15 +5,20 @@ const { Sequelize } = require('sequelize');
 
 // Conexión a la DB externa
 const sequelize = new Sequelize(
-  'railway',
-  'postgres',
-  'elz1XWkiI4dK7sJiP8Gv',
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: 'containers-us-west-118.railway.app',
-    dialect: 'postgres',
-    port: 6426,
-    logging: false
-  }
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT,
+    logging: true,
+    "dialectOptions": {
+      ssl: {
+          require: true,
+          rejectUnauthorized: false,
+      }
+  }}
 )
 const userModel = require('../models/users')
 const habitatModel = require('../models/habitats')

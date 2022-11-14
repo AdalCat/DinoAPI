@@ -18,13 +18,15 @@ async function getHistoricalPeriod(req, res){
          include: [
             { model: sequelize.models.dinos, attributes: ['id', 'name']}]});
 
-    if (habitat) {
-        res.status(200).json(habitat);
-    } else  {
-        res.status(404).end();
-    }
-}
-
+            if (habitat) {
+                res.status(200).json(habitat);
+              } else {
+                res.status(404).json({
+                  Message: "Periodo historico no encontrado",
+                });
+              }
+            }
+          
 //Leer un solo HistoricalPeriod, por NAME
 async function getHistoricalPeriodNames(req, res) {
     const name = req.params.name;
@@ -34,8 +36,15 @@ async function getHistoricalPeriodNames(req, res) {
       },include: [
         { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
-    res.status(200).json(habitat);
-}
+    if (habitat) {
+        res.status(200).json(habitat);
+      } else {
+        res.status(404).json({
+          Message: "Periodo historico no encontrado",
+        });
+      }
+    
+  }
 
 //Leer varios habitats por búsqueda de nombre
 async function getHistoricalPeriodByLetter(req, res) {
@@ -47,7 +56,15 @@ async function getHistoricalPeriodByLetter(req, res) {
       },include: [
         { model: sequelize.models.dinos, attributes: ['id', 'name']}]
     });
-    res.status(200).json(habitat);
+    if (habitat) {
+        res.status(200).json(habitat);
+      } else {
+        res.status(404).json({
+          Message: "Periodo historico no encontrado",
+        });
+      }
+    
+
   }
   
   
