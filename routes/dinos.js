@@ -1,6 +1,7 @@
 // Llamamos al Router de Express
 const router = require('express').Router();
 const permission = require('../middlewares/permission')
+const cors = require('cors')
 // Llamamos a las funciones
 const {
         createDino,
@@ -42,7 +43,7 @@ router.post('/', permission('admin'),createDino);
  */ 
 
 // Para obtener todos los Dinos
-router.get('/',getDinos);
+router.get('/', cors({origin: '*'}) ,getDinos);
 /**
  * @openapi
  * /dinos:

@@ -37,9 +37,6 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(helmet())
 app.use(cors())
 
-
-
-
 // Revisamos la conexión con la DB
 try{
     sequelize.authenticate();
@@ -52,5 +49,3 @@ try{
 app.listen(process.env['PORT'] || 3000, () => {
   console.log("Server listening on PORT", process.env['PORT']);
 });
-
-// Revisamos la conexión con la DB
