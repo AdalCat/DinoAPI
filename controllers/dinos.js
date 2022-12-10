@@ -17,13 +17,12 @@ async function getDino(req, res){
     const id = req.params.id;
     const dino = await sequelize.models.dinos.findOne({where:{id},
         include: [
-            
-            {model: sequelize.models.habitats, attributes: ['id', 'place']},
-            {model: sequelize.models.historicalperiods, attributes: ['id', 'name']}
-          ]
+          {model: sequelize.models.habitats, attributes: ['id', 'place', 'subregion']},
+          {model: sequelize.models.historicalperiods, attributes: ['id', 'name', 'years']}
+        ]
     });
     if (dino) {
-      res.status(200).json(dino);
+      res.status(200).json({dinosaurs:dino});
     } else {
       res.status(404).json({
         Message: "Dino no encontrado",
@@ -38,11 +37,12 @@ async function getDinoNames(req, res) {
       where: {
         name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', '%' + name.toLowerCase() + '%')
       }, include: [
-        { model: sequelize.models.habitats, attributes: ['id', 'place']}
+        { model: sequelize.models.habitats, attributes: ['id', 'place', 'subregion']},
+        
       ],
     });
     if (dino) {
-      res.status(200).json(dino);
+      res.status(200).json({dinosaurs:dino});
     } else {
       res.status(404).json({
         Message: "Dino no encontrado",
@@ -51,7 +51,7 @@ async function getDinoNames(req, res) {
   
 }
 
-//Leer varios dinos por búsqueda de nombre
+//Leer un dino por búsqueda de letra
 async function getDinoByLetter(req, res) {
     const name = req.params.name;
     const dino = await sequelize.models.dinos.findAll({
@@ -61,7 +61,7 @@ async function getDinoByLetter(req, res) {
       }
     });
     if (dino) {
-      res.status(200).json(dino);
+      res.status(200).json({dinosaurs:dino});
     } else {
       res.status(404).json({
         Message: "Dino no encontrado",
@@ -76,8 +76,12 @@ async function getDinoRandom(req, res) {
     const dino = await sequelize.models.dinos.findAll({
         order: sequelize.random(),
         limit: 1,
+        include: [
+          {model: sequelize.models.habitats, attributes: ['id', 'place', 'subregion']},
+          {model: sequelize.models.historicalperiods, attributes: ['id', 'name', 'years']}
+        ],
     });
-    res.status(200).json(dino);
+    res.status(200).json({dinosaurs:dino});
 }
 
 // Leer todos los Dinos
@@ -85,13 +89,11 @@ async function getDinos(req, res){
     
     let dinos = await sequelize.models.dinos.findAll({
         include: [
-            
-            {model: sequelize.models.habitats, attributes: ['id', 'place']},
-            {model: sequelize.models.historicalperiods, attributes: ['id', 'name']}
-
+            {model: sequelize.models.habitats, attributes: ['id', 'place', 'subregion']},
+            {model: sequelize.models.historicalperiods, attributes: ['id', 'name', 'years']}
           ]
     });
-    res.status(200).json(dinos);
+    res.status(200).json({dinosaurs:dinos});
 }
 
 // Actualizar Dino

@@ -16,7 +16,7 @@ router.get('/users/signup', (req, res) => {
     res.render('signup')
 });
 
-router.use('/dinos',authenticate,require('./dinos'));
+router.use('/dinos', require('./dinos'));
 router.use('/habitats',authenticate,require('./habitats'));
 router.use('/historicalperiods',authenticate,require('./historicalperiods'));
 

@@ -22,7 +22,7 @@ module.exports = {
       historicalperiodId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'historicalPeriods',
+          model: 'historicalperiods',
           foreignKey: 'id',
         },
         onDelete: 'CASCADE',

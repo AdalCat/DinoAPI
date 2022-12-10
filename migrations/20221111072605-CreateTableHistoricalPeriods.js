@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('historicalPeriods', {
+    await queryInterface.createTable('historicalperiods', {
       id:{ type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
       namePeriod: Sequelize.STRING,
       years: Sequelize.STRING,
@@ -13,6 +13,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('historicalPeriods');
+    await queryInterface.dropTable('historicalperiods');
   }
 };
