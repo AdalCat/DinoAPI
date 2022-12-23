@@ -17,7 +17,7 @@ const {
 const auth = require('../config/auth')
 
 // Para crear un Dino
-router.post('/', permission('admin'),createDino);
+router.post('/', createDino);
 /**
  * @swagger
  * /dinos:
